@@ -1,0 +1,36 @@
+{
+  "npmScope": "aws-frontend",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "main": {
+      "tags": []
+    },
+    "main-e2e": {
+      "tags": [],
+      "implicitDependencies": ["main"]
+    },
+    "main-feature-shell": {
+      "tags": []
+    },
+    "shared-predictions-feature-textract": {
+      "tags": []
+    }
+  }
+}
