@@ -13,7 +13,7 @@ export class AppComponent {
   keyValues: Array<{ key: string; value: string }> = [];
   textSources = [
     { text: 'Words', value: 'w' },
-    { text: 'Form - Key Values', value: 'f' },
+    { text: 'Form - Key Values (Disabled)', value: 'f' },
   ];
   selectedTextSource = 'w';
   enableIdentify = false;
@@ -33,7 +33,7 @@ export class AppComponent {
     this.hasResult = false;
     this.isBusy = true;
     Predictions.identify({
-      text: { source: { file: this.selectedFile }, format: 'FORM' },
+      text: { source: { file: this.selectedFile }, format: 'PLAIN' },
     })
       .then((result) => {
         if (result.text) {

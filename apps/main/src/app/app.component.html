@@ -1,56 +1,93 @@
-<header class="flex">
-  <h1>Welcome to an example of using Amazon Textract (via AWS Amplify) to identify raw text and form key-values</h1>
-</header>
-<main style="font-size: 14px;">
-  <div class="container-top">
-    <div class="flex file-upload">
-      <span style="margin-right: 5px; font-size: 14px;">Upload a single-page document image (png or jpg up to 1MB):</span>
-      <input type="file" style="width: 400px;" (change)="fileChange($event)">
-    </div>  
-    <div class="flex" style="font-size: 12px; color: red;" *ngIf="fileSelectError">{{fileSelectError}}</div>
-    <div class="flex button-container">
-      <button (click)="identifyText()" [attr.disabled]="this.selectedFile ? null : 'disabled'">Click to identify text from selected image file</button>
-    </div>
-  </div>  
-  <ng-container *ngIf="hasResult">
-    <div class="flex radio-container" *ngIf="true">
-      <div class="flex radio-row" *ngFor="let textSource of textSources; let idx = index">
-        <input class="radio"
-          type="radio"          
-          name="textSource"
-          (change)="textSourceClicked(textSource)"
-          [value]="textSource.value"
-          [(ngModel)]="selectedTextSource"
+<amplify-authenticator>
+  <div style="height: 50px; display: flex; justify-content: flex-end;">
+    <amplify-sign-out></amplify-sign-out>
+  </div>
+  <header class="flex">
+    <h1>
+      Welcome to an example of using Amazon Textract (via AWS Amplify) to
+      identify raw text and form key-values
+    </h1>
+  </header>
+  <main style="font-size: 14px;">
+    <div class="container-top">
+      <div class="flex file-upload">
+        <span style="margin-right: 5px; font-size: 14px;"
+          >Upload a single-page document image (png or jpg up to 1MB):</span
+        >
+        <input
+          type="file"
+          style="width: 400px;"
+          (change)="fileChange($event)"
         />
-        <label for="{{ textSource.value }}" class="radio-label">{{ textSource.text }}</label>
       </div>
-    </div>    
-    <ng-container *ngIf="!resultError">
-      <ng-container *ngIf="selectedTextSource === 'w'">
-        <div *ngIf="hasResult && (!words || words.length <= 0)">No words found</div>
-        <ng-container *ngIf="words && words.length > 0">  
-          <div class="words-count">{{words.length + ' words found'}}</div>
-          <div class="words">
-            <div *ngFor="let word of words" class="word">{{word}}</div>
-          </div> 
-        </ng-container>
-      </ng-container>
-      <ng-container *ngIf="selectedTextSource === 'f'">
-        <div *ngIf="hasResult && (!keyValues || keyValues.length <= 0)">No form key values found</div>
-        <ng-container *ngIf="keyValues && keyValues.length > 0">
-          <div class="kvs-count">{{keyValues.length + ' form key values found'}}</div>
-          <div class="kvs-container" >          
-            <div *ngFor="let kv of keyValues" class="kv-container">
-              <div class="kv-key">{{kv.key}}</div><div class="kv-value">{{kv.value}}</div>
-            </div>
+      <div
+        class="flex"
+        style="font-size: 12px; color: red;"
+        *ngIf="fileSelectError"
+      >
+        {{ fileSelectError }}
+      </div>
+      <div class="flex button-container">
+        <button
+          (click)="identifyText()"
+          [attr.disabled]="this.selectedFile ? null : 'disabled'"
+        >
+          Click to identify text from selected image file
+        </button>
+      </div>
+    </div>
+    <ng-container *ngIf="hasResult">
+      <div class="flex radio-container" *ngIf="true">
+        <div
+          class="flex radio-row"
+          *ngFor="let textSource of textSources; let idx = index"
+        >
+          <input
+            class="radio"
+            type="radio"
+            name="textSource"
+            (change)="textSourceClicked(textSource)"
+            [value]="textSource.value"
+            [(ngModel)]="selectedTextSource"
+            [disabled]="textSource.value === 'f'"
+          />
+          <label for="{{ textSource.value }}" class="radio-label">{{
+            textSource.text
+          }}</label>
+        </div>
+      </div>
+      <ng-container *ngIf="!resultError">
+        <ng-container *ngIf="selectedTextSource === 'w'">
+          <div *ngIf="hasResult && (!words || words.length <= 0)">
+            No words found
           </div>
+          <ng-container *ngIf="words && words.length > 0">
+            <div class="words-count">{{ words.length + ' words found' }}</div>
+            <div class="words">
+              <div *ngFor="let word of words" class="word">{{ word }}</div>
+            </div>
+          </ng-container>
         </ng-container>
+        <ng-container *ngIf="selectedTextSource === 'f'">
+          <div *ngIf="hasResult && (!keyValues || keyValues.length <= 0)">
+            No form key values found
+          </div>
+          <ng-container *ngIf="keyValues && keyValues.length > 0">
+            <div class="kvs-count">
+              {{ keyValues.length + ' form key values found' }}
+            </div>
+            <div class="kvs-container">
+              <div *ngFor="let kv of keyValues" class="kv-container">
+                <div class="kv-key">{{ kv.key }}</div>
+                <div class="kv-value">{{ kv.value }}</div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="selectedTextSource === 't'"> </ng-container>
       </ng-container>
-      <ng-container *ngIf="selectedTextSource === 't'">        
-      </ng-container>      
     </ng-container>
-  </ng-container>
-  <div *ngIf="isBusy" class="busy flex">Processing...</div>
-  <div *ngIf="resultError" class="result-error">{{resultError}}</div>
-</main>
- 
+    <div *ngIf="isBusy" class="busy flex">Processing...</div>
+    <div *ngIf="resultError" class="result-error">{{ resultError }}</div>
+  </main>
+</amplify-authenticator>
